@@ -29,7 +29,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CategoryPicker from "./CategoryPicker";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
@@ -52,7 +56,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
       date: new Date(),
     },
   });
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const handleCategoryChange = useCallback(
     (value: string) => {
       form.setValue("category", value);
@@ -60,38 +64,41 @@ const [open, setOpen] = useState(false);
     [form]
   );
 
-const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  const {mutate, isPending} = useMutation({
-    mutationFn: CreateTransaction, 
+  const { mutate, isPending } = useMutation({
+    mutationFn: CreateTransaction,
     onSuccess: () => {
-      toast.success("Transaction created successfully",{
-        id: 'create-transaction',
+      toast.success("Transaction created successfully", {
+        id: "create-transaction",
       });
-form.reset({
-  type,
-  description: "",
-  amount: 0,
-  date: new Date(),
-  category: undefined,
-});
-// after creating a transaction, we need to invalidate the overview query which will refetch data in the homepage
-queryClient.invalidateQueries({
-  queryKey: ['overview'],
-});
-setOpen((prev) => !prev);
+      form.reset({
+        type,
+        description: "",
+        amount: 0,
+        date: new Date(),
+        category: undefined,
+      });
+      // after creating a transaction, we need to invalidate the overview query which will refetch data in the homepage
+      queryClient.invalidateQueries({
+        queryKey: ["overview"],
+      });
+      setOpen((prev) => !prev);
     },
-  })
+  });
 
-  const onSubmit = useCallback((values: CreateTransactionSchemaType) => {
-    toast.loading("Creating transaction...", {
-      id: "create-transaction",
-    });
-    mutate({
-      ...values,
-      date: DateToUTCDate(values.date),
-    })
-  }, [mutate]);
+  const onSubmit = useCallback(
+    (values: CreateTransactionSchemaType) => {
+      toast.loading("Creating transaction...", {
+        id: "create-transaction",
+      });
+      mutate({
+        ...values,
+        date: DateToUTCDate(values.date),
+      });
+    },
+    [mutate]
+  );
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -194,7 +201,7 @@ setOpen((prev) => !prev);
                           mode="single"
                           selected={field.value}
                           onSelect={(value) => {
-                            if(!value) return;
+                            if (!value) return;
                             field.onChange(value);
                           }}
                           initialFocus
@@ -204,7 +211,7 @@ setOpen((prev) => !prev);
                     <FormDescription>
                       Select a date for this transaction
                     </FormDescription>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
