@@ -16,7 +16,7 @@ datasource db {
 
 model UserSettings{
   userId String @id
-currency String
+  currency String
 }
  model Category{
   createdAt DateTime @default(now())
